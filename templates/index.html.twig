@@ -1,0 +1,29 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+
+    <br><br>
+
+    <div class="container-fluid">
+        <div class="col-md-6 offset-md-3">
+            <form action="{{ path('create-user') }}" method="POST">
+                <div class="row">
+                    <div class="col-12">
+                        <input type="text" class="form-control" id="user" name="user" placeholder="user name" aria-label="user name">
+                    </div>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-primary" style="min-width:140px;">Create user</button>
+            </form>
+        </div>
+
+        <br>
+
+        <div class="col-md-6 offset-md-3">
+            <a href="{{ path('all') }}" class="btn btn-warning mb-1" style="min-width:140px;">
+                See all users
+            </a>
+        </div>
+    </div>
+
+{% endblock %}

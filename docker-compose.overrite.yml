@@ -1,0 +1,20 @@
+###> doctrine/doctrine-bundle ###
+database:
+    ports:
+    - "5432"
+server:
+     image: yandex/clickhouse-server
+     ports:
+     - "8123:8123"
+     - "9000:9000"
+     - "9009:9009"
+     
+     ulimits:
+      nproc: 65535
+      nofile:
+       soft: 262144
+       hard: 262144
+  client:
+      image: yandex/clickhouse-client
+      command: ['--host', 'server']
+###< doctrine/doctrine-bundle ###
