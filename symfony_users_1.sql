@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `symfony_tasks_1`
+-- Database: `symfony_users_1`
 --
 
 -- --------------------------------------------------------
@@ -43,10 +43,10 @@ INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_
 -- --------------------------------------------------------
 
 --
--- Table structure for table `task`
+-- Table structure for table `user`
 --
 
-CREATE TABLE `task` (
+CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` tinyint(1) NOT NULL,
@@ -54,10 +54,10 @@ CREATE TABLE `task` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `task`
+-- Dumping data for table `user`
 --
 
-INSERT INTO `task` (`id`, `name`, `status`, `author`) VALUES
+INSERT INTO `user` (`id`, `name`, `status`, `author`) VALUES
 (1, 'pick up trash', 0, 'johndoe@name.com'),
 (2, 'drive to the store', 1, 'johndoe@name.com'),
 (3, 'read a book', 0, 'johndoe@name.com'),
@@ -78,9 +78,9 @@ ALTER TABLE `doctrine_migration_versions`
   ADD PRIMARY KEY (`version`);
 
 --
--- Indexes for table `task`
+-- Indexes for table `user`
 --
-ALTER TABLE `task`
+ALTER TABLE `user`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -88,9 +88,9 @@ ALTER TABLE `task`
 --
 
 --
--- AUTO_INCREMENT for table `task`
+-- AUTO_INCREMENT for table `user`
 --
-ALTER TABLE `task`
+ALTER TABLE `user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 COMMIT;
 

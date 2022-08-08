@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Cache\Adapter\RedisAdapter;
+use Symfony\Component\Cache\Adapter\RedisTagAwareAdapter;
 
 class UserController extends AbstractController
 {
@@ -33,19 +35,19 @@ class UserController extends AbstractController
 
         $paginatedUsers = $paginator->paginate($users, $request->query->getInt('page', 1), 5);
 
-        return $this->render('all.html.twig', ['Users' => $paginatedUsers]);
+        return $this->render('all.html.twig', ['users' => $paginatedUsers]);
     }
 
     /**
-     * @Route("/create", name="create-User", methods={"POST"})
+     * @Route("/create", name="create-user", methods={"POST"})
      */
     public function create(Request $request) {
 
-        $name = $request->request->get('User');
+        $name = $request->request->get('user');
 
         $status = 0;
 
-      //  $author = 'johndoe@name.com';
+       // $author = 'johndoe@name.com';
 
         $objectManager = $this->getDoctrine()->getManager();
 
@@ -55,23 +57,59 @@ class UserController extends AbstractController
 
         $newId = $lastId + 1;
 
-        $User = new User;
+        $user = new User;
 
-        $User->setId($newId);
+        $user->setId($newId);
 
-        $User->setName($name);
+        $user->setName($name);
 
-    //    $User->setStatus($status);
+        $user->setStatus($status);
 
-     //   $User->setAuthor($author);
-
-        $objectManager->persist($User);
+        $objectManager->persist($user);
 
         $objectManager->flush();
 
         $this->addFlash('success', 'You have created a new User!');
 
         return $this->redirectToRoute('all');
+
+        //cashing
+
+
+
+        $cache = new RedisAdapter(
+
+    // the object that stores a valid connection to your Redis system
+        $redisConnection,
+
+    // the string prefixed to the keys of the items stored in this cache
+        $namespace = '',
+
+    // the default lifetime (in seconds) for cache items that do not define their
+    // own lifetime, with a value 0 causing items to be stored indefinitely (i.e.
+    // until RedisAdapter::clear() is invoked or the server(s) are purged)
+        $defaultLifetime = 60
+);
+
+        $client = RedisAdapter::createConnection(
+
+    // provide a string dsn
+        'redis://localhost:6379',
+
+    // associative array of configuration options
+    [
+        'lazy' => false,
+        'persistent' => 0,
+        'persistent_id' => null,
+        'tcp_keepalive' => 0,
+        'timeout' => 30,
+        'read_timeout' => 0,
+        'retry_interval' => 0,
+    ]
+
+);
+        $client = RedisAdapter::createConnection('redis://localhost');
+        $cache = new RedisTagAwareAdapter($client);
 
     }
 
@@ -82,9 +120,9 @@ class UserController extends AbstractController
 
         $objectManager = $this->getDoctrine()->getManager();
 
-        $User = $objectManager->getRepository(User::class)->find($id);
+        $user = $objectManager->getRepository(User::class)->find($id);
 
-        $User->setStatus(!$User->getStatus());
+        $user->setStatus(!$user->getStatus());
 
         $objectManager->flush();
 
@@ -95,7 +133,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/deleteUser/{id}", name="delete-User")
+     * @Route("/delete-user/{id}", name="delete-user")
      */
     public function delete(User $id) {
 

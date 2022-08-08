@@ -24,12 +24,8 @@ class User
     /**
      * @ORM\Column(type="boolean")
      */
- //   private $status;
+    private $status;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-  //  private $author;
 
     public function getId(): ?int
     {
@@ -55,7 +51,7 @@ class User
         return $this;
     }
 
- /*   public function getStatus(): ?bool
+    public function getStatus(): ?bool
     {
         return $this->status;
     }
@@ -67,16 +63,5 @@ class User
         return $this;
     }
 
-    public function getAuthor(): ?string
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(string $author): self
-    {
-        $this->author = $author;
-
-        return $this;
-    }
-    */
+   
 }
